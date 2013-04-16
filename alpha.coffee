@@ -21,26 +21,13 @@ class Util
   distance: (pos, target) ->
     Math.sqrt(square(pos[0] - target[0]) + square(pos[1] - target[1]))
 
-  hypotenous: (pos) ->
+  hypotenuse: (pos) ->
     @distance(pos, [0,0])
 
-  sideFromArea:(area) ->
-    # for an equilateral triangle
-    # http://en.wikipedia.org/wiki/Equilateral_triangle
-    return Math.sqrt((area * 4)/ Math.sqrt(3))
-
-  circumscribedRadius: (side) ->
-    return side * Math.sqrt(3) * (1/3)
-
-  inscribedRadius: (side) ->
-    return @circumscribedRadius(side) / 2
-
-  averageRadius: (side) ->
-    return side * Math.sqrt(3) * (1/3) * (3/4)
-
-  avgRadiusFromArea: (area) ->
-    @averageRadius @sideFromArea(area)
-
+  deltaTorque: (m_i, ang_rot) ->
+    # delta torque, given moment of inertia 
+    # and desired delta change in angular rotation
+    return m_i * ang_rot
 
 
 
@@ -64,7 +51,7 @@ ai.step = (o) ->
 
 
 outsideGameField = (o, pos) ->
-  if o.mothership.util.hypotenous(pos) - 10 > o.game.moon_field
+  if o.mothership.util.hypotenuse(pos) - 10 > o.game.moon_field
     return true
   else
     return false
@@ -77,14 +64,15 @@ stepDrone = (o) ->
   positions = [o.me.pos, o.me.pos + o.me.vel*1, o.me.pos + o.me.vel*2]
 
   # calculate game field limit
-  goingOut = false
+  exitingField = false
   # shootTheMoon = false
   for p in positions
-    goingOut = goingOut or outsideGameField(p)
+    exitingField = exitingField or outsideGameField(p)
 
-  if goingOut
+  if exitingField
     # find how far to turn in either direction to avoid game field exit
-    avgRadiusFromArea(o.me.area)
+    #avgRadiusFromArea(o.me.area)
+    
 
   else
     return {
