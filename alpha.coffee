@@ -36,13 +36,13 @@ class Util
 ai.step = (o) ->
   o.mothership.util ?= Util(o)
 
-  return stepDrone(o)
-  # return {
-  #   thrust: 0.5
-  #   torque: 1
-  #   label: o.me.area
-  #   log: o.me.mass
-  # }
+  #return stepDrone(o)
+  return {
+    thrust: 0.5
+    torque: 1
+    label: o.me.area
+    log: o.me.mass
+  }
 
 
 # circle calculations
@@ -72,7 +72,7 @@ stepDrone = (o) ->
   if exitingField
     # find how far to turn in either direction to avoid game field exit
     #avgRadiusFromArea(o.me.area)
-    
+
 
   else
     return {
