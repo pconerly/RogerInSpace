@@ -1,15 +1,15 @@
-should = require 'should'
+# should = require 'should'
 
-alpha = require '../alpha'
+# alpha = require '../alpha'
 
-rogerbot = alpha.rogerbot
+# rogerbot = alpha.rogerbot
 
-describe 'alpha', ->
-  describe 'rogerbot', ->
-    it 'exists', (done) ->
-      should.exist rogerbot
-      done()
+# describe 'alpha', ->
+#   describe 'rogerbot', ->
+#     it 'exists', (done) ->
+#       should.exist rogerbot
+#       done()
 
 
-# describe 'util', ->
-  
+# # describe 'util', ->
+#   

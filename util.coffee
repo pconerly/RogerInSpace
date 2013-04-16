@@ -9,49 +9,39 @@
 # * Have ships respect the gravity of the system and use it to get from point A to point B faster.  
 #   (i.e. gravitational whipping)
 
+class Util
+  o: null
 
-ai.step = (o) ->
+  constructor: (o) ->
+    @o = o
 
-  if o.me.queen
-    return stepQueen(o)
-  else
-    return stepDrone(o)
+  square: (x) ->
+    x*x
 
+  distance: (pos, target) ->
+    Math.sqrt(square(pos[0] - target[0]) + square(pos[1] - target[1]))
 
+  hypotenous: (pos) ->
+    @distance(pos, [0,0])
 
-  label            = null
-  threats          = get_threats o
-  new_target       = find_ideal_position o, threats    
-  {torque, thrust} = o.lib.targeting.simpleTarget o.me, new_target
-  if threats[0].threat_factor < threat_thresh then thrust = 1.0
-  return { 
-    torque: torque
-    thrust: thrust
-    label: label 
-  }
+  sideFromArea:(area) ->
+    # for an equilateral triangle
+    # http://en.wikipedia.org/wiki/Equilateral_triangle
+    return Math.sqrt((area * 4)/ Math.sqrt(3))
 
+  circumscribedRadius: (side) ->
+    return side * Math.sqrt(3) * (1/3)
 
-stepQueen = (o) ->
-  return
+  inscribedRadius: (side) ->
+    return @circumscribedRadius(side) / 2
 
-stepDrone = (o) ->
-  return
+  averageRadius: (side) ->
+    return side * Math.sqrt(3) * (1/3) * (3/4)
 
-square = (x) ->
-  x*x
+  momentOfInertia: (mass, area) ->
+    mass * @square(@avgRadiusFromArea(area))
 
-distance = (pos, target) ->
-  Math.sqrt(square(pos[0] - target[0]) + square(pos[1] - target[1]))
+  avgRadiusFromArea: (area) ->
+    @averageRadius @sideFromArea(area)
 
-
-findWall = (o) ->
-  pos = o.me.pos
-  ## find distance from center.
-  distFromCenter = Math.sqrt(pos[0]**2 + pos[1]**2)
-  ## find angle from center.
-
-
-  return #distance, direction
-
-
-
+module.exports = Util
